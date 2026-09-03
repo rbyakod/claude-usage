@@ -17,6 +17,8 @@ The installer copies compact Claude instructions and safe Xcode helper scripts i
 - `templates/CLAUDE-root.md`: root Claude Code rules.
 - `templates/CLAUDE-feature.md`: feature-folder rules.
 - `templates/task-contract.md`: scoped task template.
+- `config/permissions.example.json`: example allow, ask, and deny permissions.
+- `config/xcode-rules.json`: Xcode log, path, and summary defaults.
 - `scripts/xcode-build`: compact build wrapper.
 - `scripts/xcode-test`: compact test wrapper.
 - `scripts/xcode-test-one`: single-test wrapper.

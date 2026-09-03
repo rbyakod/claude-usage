@@ -1,0 +1,25 @@
+{
+  "allow": [
+    "rg",
+    "git status",
+    "git diff",
+    "./scripts/xcode-build",
+    "./scripts/xcode-test",
+    "./scripts/xcode-test-one",
+    "./scripts/project-summary",
+    "./scripts/git-summary"
+  ],
+  "ask": [
+    "dependency installation",
+    "provisioning profile changes",
+    "signing changes",
+    "device/simulator reset",
+    "writes outside repository"
+  ],
+  "deny": [
+    "reading secrets",
+    "deleting branches",
+    "rewriting git history",
+    "removing DerivedData without approval"
+  ]
+}

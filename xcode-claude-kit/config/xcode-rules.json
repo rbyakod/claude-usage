@@ -1,0 +1,7 @@
+{
+  "log_dir": "/tmp/claude-xcode-kit/logs",
+  "max_summary_lines": 120,
+  "warn_output_lines": 300,
+  "ignore_paths": ["DerivedData", ".build", "SourcePackages", "Pods", ".swiftpm"],
+  "error_patterns": ["error:", "warning:", "Test Case '-["]
+}
