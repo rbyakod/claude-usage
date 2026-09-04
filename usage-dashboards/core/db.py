@@ -202,6 +202,8 @@ def insert_usage(conn: sqlite3.Connection, record: UsageRecord) -> None:
 
 
 def insert_command(conn: sqlite3.Connection, record: CommandRecord) -> None:
+    from .attribution import classify_command
+
     _ensure_session_and_turn(conn, record)
     row_id = stable_id(record.provider, record.session_id, record.turn_id, record.command, record.timestamp)
     preview = record.command[:500]
@@ -210,9 +212,9 @@ def insert_command(conn: sqlite3.Connection, record: CommandRecord) -> None:
         """
         INSERT INTO commands (
             id, provider, session_id, turn_id, command_preview,
-            output_line_count, output_char_count, status, timestamp
+            output_line_count, output_char_count, command_family, status, timestamp
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(id) DO UPDATE SET
             output_line_count=excluded.output_line_count,
             output_char_count=excluded.output_char_count,
@@ -226,6 +228,7 @@ def insert_command(conn: sqlite3.Connection, record: CommandRecord) -> None:
             preview,
             output_line_count,
             len(record.output),
+            classify_command(record.command),
             record.status,
             record.timestamp,
         ),

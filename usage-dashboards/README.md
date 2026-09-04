@@ -22,3 +22,13 @@ Open:
 - `http://127.0.0.1:4310/zai`
 
 The app stores local summaries in `data/usage.sqlite3`. It does not upload transcripts or store API keys.
+
+## Ingest Local Data
+
+```bash
+./scripts/ingest --claude
+./scripts/ingest --codex
+./scripts/ingest tests/fixtures/*.jsonl
+```
+
+Use `--db /path/to/file.sqlite3` to write to a different SQLite file.
