@@ -25,6 +25,13 @@ Open:
 
 The app stores local summaries in `data/usage.sqlite3`. It does not upload transcripts or store API keys.
 
+## Pages
+
+- Overview: all providers together.
+- Claude: Anthropic usage and API-equivalent cost.
+- Codex: Codex token and reasoning-token usage.
+- Z.ai / GLM: GLM API estimate and Coding Plan credit estimate, kept separate.
+
 ## Ingest Local Data
 
 ```bash

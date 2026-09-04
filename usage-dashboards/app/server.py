@@ -8,6 +8,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 from core.db import connect, list_commands, list_usage, migrate, summary
+from core.costs import estimate_cost
 from core.recommendations import recommendations_for
 
 
@@ -72,6 +73,7 @@ class UsageHandler(BaseHTTPRequestHandler):
             conn = connect(self.db_path)
             migrate(conn)
             payload = summary(conn, provider)
+            payload["costs"] = _cost_summary(list_usage(conn, provider))
             conn.close()
             self._send_json(payload)
             return
@@ -100,6 +102,41 @@ def _thresholds() -> dict[str, int]:
     if not path.exists():
         return {}
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _cost_summary(records: list[object]) -> dict[str, object]:
+    totals = {"usd": 0.0, "zai_plan_credits": 0.0, "unpriced": 0}
+    by_model: dict[str, dict[str, float | int | str]] = {}
+    for record in records:
+        estimate = estimate_cost(record, ROOT / "config")
+        plan_estimate = estimate_cost(record, ROOT / "config", "coding_plan") if record.provider == "zai" else None
+        if estimate.usd is None and estimate.confidence == "unpriced_model":
+            totals["unpriced"] += 1
+        if estimate.usd is not None:
+            totals["usd"] += estimate.usd
+        if plan_estimate and plan_estimate.credits is not None:
+            totals["zai_plan_credits"] += plan_estimate.credits
+        model = by_model.setdefault(record.model, {"model": record.model, "usd": 0.0, "credits": 0.0, "unpriced": 0})
+        if estimate.usd is not None:
+            model["usd"] = float(model["usd"]) + estimate.usd
+        if plan_estimate and plan_estimate.credits is not None:
+            model["credits"] = float(model["credits"]) + plan_estimate.credits
+        if estimate.confidence == "unpriced_model":
+            model["unpriced"] = int(model["unpriced"]) + 1
+    return {
+        "usd": round(totals["usd"], 6),
+        "zai_plan_credits": round(totals["zai_plan_credits"], 4),
+        "unpriced": totals["unpriced"],
+        "by_model": [
+            {
+                "model": item["model"],
+                "usd": round(float(item["usd"]), 6),
+                "credits": round(float(item["credits"]), 4),
+                "unpriced": item["unpriced"],
+            }
+            for item in sorted(by_model.values(), key=lambda row: (-float(row["usd"]) - float(row["credits"]), str(row["model"])))
+        ],
+    }
 
 
 def make_server(host: str, port: int, db_path: Path) -> ThreadingHTTPServer:

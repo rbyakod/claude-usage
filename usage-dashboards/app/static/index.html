@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Usage Dashboards</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to dashboard</a>
+    <header class="topbar">
+      <div>
+        <h1>Usage Dashboards</h1>
+        <p id="subtitle">Local Claude, Codex, and Z.ai/GLM usage</p>
+      </div>
+      <nav aria-label="Dashboard pages">
+        <a href="/" data-route="/">Overview</a>
+        <a href="/claude" data-route="/claude">Claude</a>
+        <a href="/codex" data-route="/codex">Codex</a>
+        <a href="/zai" data-route="/zai">Z.ai / GLM</a>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="status-row" aria-live="polite">
+        <span id="status">Loading local data...</span>
+        <span id="provider-label">Provider: all</span>
+      </section>
+      <section class="metrics" id="metrics" aria-label="Usage totals"></section>
+      <section class="grid">
+        <article>
+          <div class="section-head">
+            <h2>Models</h2>
+            <span>Exact transcript totals</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>Turns</th>
+                  <th>Tokens</th>
+                  <th>Est. USD</th>
+                  <th>Plan Credits</th>
+                </tr>
+              </thead>
+              <tbody id="models"></tbody>
+            </table>
+          </div>
+        </article>
+        <article>
+          <div class="section-head">
+            <h2>Commands</h2>
+            <span>Command token impact is estimated</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Family</th>
+                  <th>Runs</th>
+                  <th>Output Lines</th>
+                </tr>
+              </thead>
+              <tbody id="commands"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+      <section class="recommendations" aria-labelledby="recommendation-heading">
+        <div class="section-head">
+          <h2 id="recommendation-heading">Xcode Workflow Warnings</h2>
+          <span>Local rules from the source design</span>
+        </div>
+        <div id="recommendations"></div>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>
