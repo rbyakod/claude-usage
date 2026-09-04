@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+log_dir="${CLAUDE_XCODE_LOG_DIR:-/tmp/claude-xcode-kit/logs}"
+mkdir -p "$log_dir"
+timestamp="$(date +%Y%m%d-%H%M%S)"
+log_path="$log_dir/xcode-build-$timestamp.log"
+
+set +e
+xcodebuild build "$@" >"$log_path" 2>&1
+status=$?
+set -e
+
+line_count="$(wc -l <"$log_path" | tr -d ' ')"
+warning_count="$(grep -c "warning:" "$log_path" || true)"
+error_count="$(grep -c "error:" "$log_path" || true)"
+
+if [ "$status" -eq 0 ]; then
+  echo "BUILD PASSED"
+else
+  echo "BUILD FAILED"
+fi
+
+echo "Output lines: $line_count"
+echo "Warnings: $warning_count"
+echo "Errors: $error_count"
+echo
+"$(dirname "$0")/xcode-errors" "$log_path"
+exit "$status"

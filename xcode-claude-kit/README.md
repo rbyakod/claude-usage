@@ -22,5 +22,10 @@ The installer copies compact Claude instructions and safe Xcode helper scripts i
 - `scripts/xcode-build`: compact build wrapper.
 - `scripts/xcode-test`: compact test wrapper.
 - `scripts/xcode-test-one`: single-test wrapper.
+- `scripts/xcode-errors`: compact diagnostic extractor.
 - `scripts/project-summary`: compact Xcode project summary.
 - `scripts/git-summary`: compact Git summary.
+
+## Wrapper Behavior
+
+The Xcode wrappers save full logs under `/tmp/claude-xcode-kit/logs` and print compact summaries back to Claude. This keeps build and test diagnostics useful without flooding the model context with full `xcodebuild` output.

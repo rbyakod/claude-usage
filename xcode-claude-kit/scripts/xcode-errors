@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "usage: xcode-errors LOG_PATH" >&2
+  exit 2
+fi
+
+log_path="$1"
+if [ ! -f "$log_path" ]; then
+  echo "Log not found: $log_path" >&2
+  exit 2
+fi
+
+echo "Diagnostics:"
+grep -E "error:|warning:|failed|Test Case '-\\[" "$log_path" | head -80 || true
+echo
+echo "Full log: $log_path"

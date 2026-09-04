@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "Xcode project summary"
+echo
+
+if compgen -G "*.xcodeproj" >/dev/null; then
+  echo "Projects:"
+  for project in *.xcodeproj; do
+    echo "- $project"
+  done
+else
+  echo "Projects: none found at repository root"
+fi
+
+echo
+echo "Schemes:"
+xcodebuild -list 2>/dev/null | sed -n '/Schemes:/,$p' | head -40 || echo "Unable to list schemes"
+
+echo
+echo "Likely source/test directories:"
+find . -maxdepth 3 -type d \
+  ! -path "./DerivedData*" \
+  ! -path "./.build*" \
+  ! -path "./SourcePackages*" \
+  ! -path "./Pods*" \
+  \( -iname "*Tests" -o -iname "*UITests" -o -iname "Sources" -o -iname "App" -o -iname "Tests" \) \
+  | sort | head -80

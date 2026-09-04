@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ $# -lt 2 ]; then
+  echo "usage: xcode-test-one SCHEME TEST_IDENTIFIER [xcodebuild args...]" >&2
+  exit 2
+fi
+
+scheme="$1"
+test_identifier="$2"
+shift 2
+
+"$(dirname "$0")/xcode-test" -scheme "$scheme" -only-testing:"$test_identifier" "$@"
