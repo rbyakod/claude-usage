@@ -1,0 +1,2 @@
+{"type":"assistant","session_id":"zai-session-1","uuid":"zai-turn-1","timestamp":"2026-09-03T12:00:00Z","message":{"model":"glm-5.3","usage":{"input_tokens":40000,"output_tokens":5000,"cache_creation_input_tokens":0,"cache_read_input_tokens":120000}}}
+{"type":"assistant","session_id":"zai-session-1","uuid":"zai-turn-2","timestamp":"2026-09-03T12:10:00Z","message":{"model":"glm-5.3-flash","usage":{"input_tokens":9000,"output_tokens":1000,"cache_creation_input_tokens":0,"cache_read_input_tokens":15000}}}
