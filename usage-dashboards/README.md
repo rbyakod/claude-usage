@@ -14,6 +14,8 @@ One local server with separate Claude, Codex, and Z.ai/GLM usage dashboards.
 ./scripts/serve --port 4310
 ```
 
+Use `--db /path/to/file.sqlite3` to serve a specific database.
+
 Open:
 
 - `http://127.0.0.1:4310/`

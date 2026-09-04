@@ -289,3 +289,47 @@ def summary(conn: sqlite3.Connection, provider: str | None = None) -> dict[str, 
         "models": [dict(row) for row in models],
         "commands": [dict(row) for row in commands],
     }
+
+
+def list_usage(conn: sqlite3.Connection, provider: str | None = None) -> list[UsageRecord]:
+    params: list[str] = []
+    where = ""
+    if provider:
+        where = "WHERE provider = ?"
+        params.append(provider)
+    rows = conn.execute(
+        f"""
+        SELECT provider, session_id, turn_id, model, timestamp, input_tokens,
+               output_tokens, cache_creation_tokens, cache_read_tokens,
+               reasoning_tokens, project, source_path
+        FROM usage_records
+        {where}
+        ORDER BY timestamp DESC
+        """,
+        params,
+    ).fetchall()
+    return [UsageRecord(**dict(row)) for row in rows]
+
+
+def list_commands(conn: sqlite3.Connection, provider: str | None = None) -> list[CommandRecord]:
+    params: list[str] = []
+    where = ""
+    if provider:
+        where = "WHERE provider = ?"
+        params.append(provider)
+    rows = conn.execute(
+        f"""
+        SELECT provider, session_id, turn_id, command_preview AS command,
+               status, timestamp, output_line_count
+        FROM commands
+        {where}
+        ORDER BY timestamp DESC
+        """,
+        params,
+    ).fetchall()
+    commands: list[CommandRecord] = []
+    for row in rows:
+        data = dict(row)
+        output = "\n" * int(data.pop("output_line_count", 0))
+        commands.append(CommandRecord(output=output, **data))
+    return commands
