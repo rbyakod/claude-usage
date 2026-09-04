@@ -1,0 +1,20 @@
+{
+  "provider": "codex",
+  "rate_version": "2026-09-04-local-config",
+  "source_url": "https://platform.openai.com/docs/models",
+  "notes": "Editable local estimates. Prices are USD per 1M tokens. Cached input uses input rate when no separate local rate is configured.",
+  "models": {
+    "gpt-5.6-sol": {
+      "input_per_million": 4.0,
+      "cached_input_per_million": 4.0,
+      "output_per_million": 20.0,
+      "reasoning_per_million": 20.0
+    },
+    "gpt-5.4-mini": {
+      "input_per_million": 0.25,
+      "cached_input_per_million": 0.25,
+      "output_per_million": 2.0,
+      "reasoning_per_million": 2.0
+    }
+  }
+}

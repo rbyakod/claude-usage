@@ -1,0 +1,7 @@
+{
+  "warn_output_lines": 300,
+  "warn_estimated_command_tokens": 5000,
+  "warn_context_percent": 70,
+  "warn_full_test_repeats": 2,
+  "warn_glm_repair_cycles": 3
+}
